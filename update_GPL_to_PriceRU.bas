@@ -1,49 +1,47 @@
-Attribute VB_Name = "РРЦ_Zyxel"
 Public Sub d()
     Dim lLastRow As Long
-    'Копируем столбец с GPL
-    ActiveSheet.Columns(25).Select '25 - номер столбца
+    'РљРѕРїРёСЂСѓРµРј СЃС‚РѕР»Р±РµС† СЃ GPL
+    ActiveSheet.Columns(25).Select '25 - РЅРѕРјРµСЂ СЃС‚РѕР»Р±С†Р°
     Selection.Copy
     Selection.Insert
     
-    'Вставляем формулу ВПР
-    Range("Z4").Select 'Нужно определить первую ячейку
-    ActiveCell.FormulaLocal = "=ВПР(F4;'C:\Users\user\Desktop\!_GPLи для компани\[Vendor_2023-03.xlsx]Sheet'!$A:$J;10;ЛОЖЬ)/$AE$1" 'Для каждого прайса своя формула
-    lLastRow = Cells(Rows.Count, 25).End(xlUp).Row 'Определяем последнюю строку диапазона
-    Range("Z4:Z" & lLastRow).FillDown 'Растягиваем формулу до конца столбца
-    Application.Sleep 5000 'сон на 5 сек
+    'Р’СЃС‚Р°РІР»СЏРµРј С„РѕСЂРјСѓР»Сѓ Р’РџР 
+    Range("Z4").Select 'РќСѓР¶РЅРѕ РѕРїСЂРµРґРµР»РёС‚СЊ РїРµСЂРІСѓСЋ СЏС‡РµР№РєСѓ
+    ActiveCell.FormulaLocal = "=Р’РџР (F4;'C:\Users\user\Desktop\!_GPLРё РґР»СЏ РєРѕРјРїР°РЅРё\[Vendor_2023-03.xlsx]Sheet'!$A:$J;10;Р›РћР–Р¬)/$AE$1" 'Р”Р»СЏ РєР°Р¶РґРѕРіРѕ РїСЂР°Р№СЃР° СЃРІРѕСЏ С„РѕСЂРјСѓР»Р°
+    lLastRow = Cells(Rows.Count, 25).End(xlUp).Row 'РћРїСЂРµРґРµР»СЏРµРј РїРѕСЃР»РµРґРЅСЋСЋ СЃС‚СЂРѕРєСѓ РґРёР°РїР°Р·РѕРЅР°
+    Range("Z4:Z" & lLastRow).FillDown 'Р Р°СЃС‚СЏРіРёРІР°РµРј С„РѕСЂРјСѓР»Сѓ РґРѕ РєРѕРЅС†Р° СЃС‚РѕР»Р±С†Р°
+    Application.Sleep 5000 'СЃРѕРЅ РЅР° 5 СЃРµРє
 
     Dim rngColor As Range
     Dim rngCellVisible As Range
     Dim lastRow As Long
-    'Фильтруем новый столбец GPL по значению #Н/Д
-    ActiveSheet.Range("A1").AutoFilter Field:=26, Criteria1:="#Н/Д"
-    'Фильтруем старый столбец GPL по значению не равному #Н/Д
+    'Р¤РёР»СЊС‚СЂСѓРµРј РЅРѕРІС‹Р№ СЃС‚РѕР»Р±РµС† GPL РїРѕ Р·РЅР°С‡РµРЅРёСЋ #Рќ/Р”
+    ActiveSheet.Range("A1").AutoFilter Field:=26, Criteria1:="#Рќ/Р”"
+    'Р¤РёР»СЊС‚СЂСѓРµРј СЃС‚Р°СЂС‹Р№ СЃС‚РѕР»Р±РµС† GPL РїРѕ Р·РЅР°С‡РµРЅРёСЋ РЅРµ СЂР°РІРЅРѕРјСѓ #Рќ/Р”
     ActiveSheet.Range("A1").AutoFilter Field:=25, Criteria1:="<>#N/A"
     
-    'Переношу старые цены в новый столбец GPL
+    'РџРµСЂРµРЅРѕС€Сѓ СЃС‚Р°СЂС‹Рµ С†РµРЅС‹ РІ РЅРѕРІС‹Р№ СЃС‚РѕР»Р±РµС† GPL
     lastRow = Cells(Rows.Count, 25).End(xlUp).Row
     For Each rngCellVisible In Range("Y4:Y" & lastRow).SpecialCells(xlCellTypeVisible)
         rngCellVisible.Offset(0, 1).Value = rngCellVisible.Value
         rngCellVisible.Offset(0, 1).Interior.Color = 192
     Next rngCellVisible
 
-    'Убираю фильтры с листа
+    'РЈР±РёСЂР°СЋ С„РёР»СЊС‚СЂС‹ СЃ Р»РёСЃС‚Р°
     ActiveSheet.AutoFilterMode = False
     ActiveSheet.Names("_FilterDatabase").Delete
-    'Выделяю новый столбец GPL от первой ячейки с ВПР и до последней заполненной ячейки и копирую
+    'Р’С‹РґРµР»СЏСЋ РЅРѕРІС‹Р№ СЃС‚РѕР»Р±РµС† GPL РѕС‚ РїРµСЂРІРѕР№ СЏС‡РµР№РєРё СЃ Р’РџР  Рё РґРѕ РїРѕСЃР»РµРґРЅРµР№ Р·Р°РїРѕР»РЅРµРЅРЅРѕР№ СЏС‡РµР№РєРё Рё РєРѕРїРёСЂСѓСЋ
     Range("Z4").Select
     Range(Selection, Selection.End(xlDown)).Select
     Selection.Copy
-    'Вставляю только значения, без формулы ВПР
+    'Р’СЃС‚Р°РІР»СЏСЋ С‚РѕР»СЊРєРѕ Р·РЅР°С‡РµРЅРёСЏ, Р±РµР· С„РѕСЂРјСѓР»С‹ Р’РџР 
     Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
-    'Удаляю старый столбец GPL
+    'РЈРґР°Р»СЏСЋ СЃС‚Р°СЂС‹Р№ СЃС‚РѕР»Р±РµС† GPL
     Columns(25).Select
     Application.CutCopyMode = False
     Selection.Delete Shift:=xlToLeft
-    'Меняю дату обновления GPL
+    'РњРµРЅСЏСЋ РґР°С‚Сѓ РѕР±РЅРѕРІР»РµРЅРёСЏ GPL
     Range("Y3").Select
     ActiveCell.Value = Date
 End Sub
-
